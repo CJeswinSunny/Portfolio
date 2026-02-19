@@ -91,16 +91,6 @@
       height: 100%;
       z-index: -2;
     }
-
-    #cursor-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
   </style>
   <script>
     tailwind.config = {
@@ -122,8 +112,7 @@
 
   <!-- Background Canvas -->
   <canvas id="bg-canvas"></canvas>
-  <!-- Cursor Canvas -->
-  <canvas id="cursor-canvas"></canvas>
+
 
   <!-- Navbar -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
@@ -768,57 +757,7 @@
     update();
 
 
-    // ------- Cursor Trail (Vanilla JS) -------
-    const cursorCanvas = document.getElementById('cursor-canvas');
-    const cCtx = cursorCanvas.getContext('2d');
-    let cWidth, cHeight;
-    let points = [];
-
-    function resizeCursor() {
-      cWidth = cursorCanvas.width = window.innerWidth;
-      cHeight = cursorCanvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCursor);
-    resizeCursor();
-
-    window.addEventListener('mousemove', (e) => {
-      points.push({ x: e.clientX, y: e.clientY, age: 0 });
-    });
-
-    function animateCursor() {
-      cCtx.clearRect(0, 0, cWidth, cHeight);
-
-      // Filter old points
-      points = points.filter(p => p.age < 50);
-
-      if (points.length > 1) {
-        cCtx.beginPath();
-        cCtx.lineCap = 'round';
-        cCtx.lineJoin = 'round';
-
-        // Draw path
-        cCtx.shadowBlur = 10;
-        cCtx.shadowColor = 'rgba(255, 255, 255, 0.2)';
-
-        for (let i = 0; i < points.length - 1; i++) {
-          const p1 = points[i];
-          const p2 = points[i + 1];
-
-          cCtx.beginPath();
-          cCtx.moveTo(p1.x, p1.y);
-          cCtx.lineTo(p2.x, p2.y);
-
-          const opacity = 1 - (p1.age / 50);
-          cCtx.lineWidth = opacity * 6;
-          cCtx.strokeStyle = `rgba(226, 232, 240, ${opacity})`; // Slate-200
-          cCtx.stroke();
-        }
-      }
-
-      points.forEach(p => p.age += 1);
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
+    // ------- End of Scripts -------
 
   </script>
   <style>
